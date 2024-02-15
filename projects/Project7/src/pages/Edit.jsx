@@ -1,50 +1,54 @@
-import Style from "./styles/Style.module.css";
+import Style from "../styles/Style.module.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function Add() {
+export default function Edit() {
   const nevigetor = useNavigate();
   const [display, setDisplay] = useState(JSON.parse(localStorage.getItem("display")) || []);
   const [input, setInput] = useState({});
-  const [edit, setEdit] = useState(false);
+  const [hobbies, setHobbies] = useState([]);
 
-  // const prams = useParams();
+  const prams = useParams();
+  const index = prams.index;
+
+  //   console.log(hobbies);
+
+  useEffect(() => {
+    setInput(display[index]);
+    setHobbies(display[index].hobbies || []);
+  });
 
   useEffect(() => {
     localStorage.setItem("display", JSON.stringify(display));
   }, [display]);
+  useEffect(() => {
+    setInput({ ...input, hobbies: hobbies });
+  }, [hobbies]);
 
   const handleChange = (e) => {
+    console.log(e.target.value);
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSelect = (e) => {
+    const selectedHobby = e.target.value;
+    if (e.target.checked) {
+      setHobbies((prevHobbies) => [...prevHobbies, selectedHobby]);
+    } else {
+      setHobbies((prevHobbies) => prevHobbies.filter((hobby) => hobby !== selectedHobby));
+    }
+  };
+
+  const handleEdit = (e) => {
     e.preventDefault();
 
-    // console.log(e.target.name.hobbies.checked.input);
-    const hobbies = [];
-    // console.log(e.target.readding.checked);
-    if (e.target.readding.checked) {
-      hobbies.push(e.target.readding.value);
-    }
-    if (e.target.cycling.checked) {
-      hobbies.push(e.target.cycling.value);
-    }
-    if (e.target.traveling.checked) {
-      hobbies.push(e.target.traveling.value);
-    }
+    const temp = [...display];
+    console.log(temp[index]);
 
-    const {
-      user: { value: user },
-      email: { value: email },
-      pass: { value: pass },
-      gender: { value: gender },
-      corse: { value: corse },
-      address: { value: address },
-    } = e.target;
+    // setDisplay([...display, input]);
 
-    console.log(user, email, pass, gender, hobbies, corse, address);
-    // console.log(hobbies.includes("Reading"));
+    alert("Edited Successful");
+    nevigetor("/");
   };
 
   return (
@@ -52,20 +56,13 @@ export default function Add() {
       <div className={Style.container}>
         <div className={Style.loginWrap}>
           <div className={Style.loginHtml}>
-            <h2 className={Style.tab}>Sign In</h2>
+            <h2 className={Style.tab}>Edit Data</h2>
 
             <div className={Style.loginForm}>
-              <form onSubmit={handleSubmit} className={Style.signInHtm}>
+              <form onSubmit={handleEdit} className={Style.signInHtm}>
                 <div className={Style.group}>
                   <label className={Style.label}>Your Name</label>
-                  <input
-                    id="user"
-                    type="text"
-                    className={Style.input}
-                    value={input ? input.user : ""}
-                    onChange={handleChange}
-                    name="user"
-                  />
+                  <input id="user" type="text" className={Style.input} value={input.user} onChange={handleChange} name="user" />
                 </div>
                 <div className={Style.group}>
                   <label className={Style.label}>Email Id</label>
@@ -91,11 +88,19 @@ export default function Add() {
                 </div>
                 <div className={Style.group}>
                   <label className={Style.label}>Gender</label>
-                  <input name="gender" type="radio" value="male" checked={input.gender === "male" ? true : false} onChange={handleChange} />
+                  <input
+                    id="male"
+                    name="gender"
+                    type="radio"
+                    value="male"
+                    checked={input.gender === "male" ? true : false}
+                    onChange={handleChange}
+                  />
                   <label htmlFor="male" className="ps-2 pe-20">
                     Male
                   </label>
                   <input
+                    id="female"
                     name="gender"
                     type="radio"
                     value={"female"}
@@ -114,8 +119,8 @@ export default function Add() {
                     name="hobbies"
                     value={"Reading"}
                     type="checkbox"
-                    onChange={handleChange}
-                    checked={input.hobbies.includes("Reading") ? true : false}
+                    onChange={handleSelect}
+                    checked={hobbies.includes("Reading") ? true : false}
                   />
                   <label htmlFor="readding" className="ps-2 pe-10">
                     Reading
@@ -125,8 +130,8 @@ export default function Add() {
                     name="hobbies"
                     value={"Cycling"}
                     type="checkbox"
-                    onChange={handleChange}
-                    checked={input.hobbies.includes("Cycling") ? true : false}
+                    onChange={handleSelect}
+                    checked={hobbies.includes("Cycling") ? true : false}
                   />
                   <label htmlFor="cycling" className="ps-2 pe-10">
                     Cycling
@@ -136,8 +141,8 @@ export default function Add() {
                     name="hobbies"
                     value={"Traveling"}
                     type="checkbox"
-                    onChange={handleChange}
-                    checked={input.hobbies.includes("Traveling") ? true : false}
+                    onChange={handleSelect}
+                    checked={hobbies.includes("Traveling") ? true : false}
                   />
                   <label htmlFor="traveling" className="ps-2">
                     Traveling
@@ -145,7 +150,10 @@ export default function Add() {
                 </div>
                 <div className={Style.group}>
                   <label className={Style.label}>Select Course</label>
-                  <select id="corse" className={Style.checkLabel} onChange={handleChange} name="Corse">
+                  <select value={input.corse} id="corse" className={Style.checkLabel} onChange={handleChange} name="corse">
+                    <option value="" className={Style.checkInput} disabled selected>
+                      Select Your Course
+                    </option>
                     <option value="PHP" className={Style.checkInput}>
                       PHP
                     </option>
@@ -162,10 +170,17 @@ export default function Add() {
                 </div>
                 <div className={Style.group}>
                   <label className={Style.label}>Your Address</label>
-                  <textarea id="address" className={Style.input} rows="3" onChange={handleChange} name="address"></textarea>
+                  <textarea
+                    value={input.address}
+                    id="address"
+                    className={Style.input}
+                    rows="3"
+                    onChange={handleChange}
+                    name="address"
+                  ></textarea>
                 </div>
                 <div className={Style.group}>
-                  <input type="submit" className={Style.button} value={edit ? "Edit" : "Register"} />
+                  <input type="submit" className={Style.button} value={"Register"} />
                 </div>
                 <div className={Style.hr}></div>
               </form>

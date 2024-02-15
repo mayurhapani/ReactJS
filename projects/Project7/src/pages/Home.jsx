@@ -1,19 +1,17 @@
-import Style from "./styles/Style.module.css";
+import Style from "../styles/Style.module.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function Home() {
   const nevigetor = useNavigate();
   const [display, setDisplay] = useState(JSON.parse(localStorage.getItem("display")) || []);
-  const [input, setInput] = useState({});
-  //   const [edit, setEdit] = useState(false);
-  //   const [id, setId] = useState("");
+  // const [input, setInput] = useState({});
 
-  //   const prams = useParams();
+  // useEffect(() => {
+  //   localStorage.setItem("display", JSON.stringify(display));
+  // }, [display]);
 
-  useEffect(() => {
-    localStorage.setItem("display", JSON.stringify(display));
-  }, [display]);
+  // console.log(display);
 
   const handleDelete = (index) => {
     const temp = [...display];
@@ -22,21 +20,13 @@ export default function Home() {
   };
 
   const handleEdit = (index) => {
-    // console.log(display[index]);
-
-    setInput(display[index]);
-    // setEdit(true);
-    // setId(index);
+    nevigetor(`/edit/${index}`);
   };
-
-  //   const handleChange = (e) => {
-  //     setInput({ ...input, [e.target.name]: e.target.value });
-  //   };
 
   const handelAdd = () => {
-    // console.log(display);
     nevigetor("/add");
   };
+
   return (
     <>
       <div className={Style.container}>
@@ -65,17 +55,17 @@ export default function Home() {
               <tbody>
                 {display.map((user, index) => (
                   <tr key={index}>
-                    <td>{user.uName}</td>
-                    <td>{user.uEmail}</td>
-                    <td>{user.uPass}</td>
-                    <td>{user.uGender}</td>
+                    <td>{user.user}</td>
+                    <td>{user.email}</td>
+                    <td>{user.pass}</td>
+                    <td>{user.gender}</td>
                     <td>
-                      {user.hobbies.uReadding ? "Reading " : ""}
-                      {user.hobbies.uCycling ? "Cycling " : ""}
-                      {user.hobbies.uTraveling ? "Traveling " : ""}
+                      {user.hobbies.map((hobby) => {
+                        return hobby + ", \n";
+                      })}
                     </td>
-                    <td>{user.uCorse}</td>
-                    <td>{user.uAddress}</td>
+                    <td>{user.corse}</td>
+                    <td>{user.address}</td>
                     <td>
                       <button onClick={() => handleDelete(index)} className={Style.smButton}>
                         Delete
