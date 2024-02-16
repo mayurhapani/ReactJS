@@ -1,12 +1,13 @@
 import Style from "../styles/Style.module.css";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Await, useNavigate, useParams } from "react-router-dom";
 
 export default function Edit() {
   const nevigetor = useNavigate();
   const [display, setDisplay] = useState(JSON.parse(localStorage.getItem("display")) || []);
   const [input, setInput] = useState({});
   const [hobbies, setHobbies] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
 
   const prams = useParams();
   const index = prams.index;
@@ -14,16 +15,20 @@ export default function Edit() {
   //   console.log(hobbies);
 
   useEffect(() => {
-    setInput(display[index]);
-    setHobbies(display[index].hobbies || []);
-  });
+    setInput(display[parseInt(index)]);
+    setHobbies(display[parseInt(index)].hobbies || []);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("display", JSON.stringify(display));
+    if (isEdit) {
+      nevigetor("/");
+    }
   }, [display]);
-  useEffect(() => {
-    setInput({ ...input, hobbies: hobbies });
-  }, [hobbies]);
+
+  // useEffect(() => {
+  //   setInput({ ...input, hobbies: hobbies });
+  // }, [hobbies]);
 
   const handleChange = (e) => {
     console.log(e.target.value);
@@ -43,12 +48,11 @@ export default function Edit() {
     e.preventDefault();
 
     const temp = [...display];
-    console.log(temp[index]);
-
-    // setDisplay([...display, input]);
-
+    temp[index] = { ...input, hobbies };
+    setIsEdit(true);
+    setDisplay(temp);
     alert("Edited Successful");
-    nevigetor("/");
+    // nevigetor("/");
   };
 
   return (
