@@ -10,9 +10,6 @@ export default function Header() {
       <Link className="me-5" to={"/add"}>
         ADD
       </Link>
-      {/* <Link className="me-5" to={`/edit`}>
-        EDIT
-      </Link> */}
     </div>
   );
 }

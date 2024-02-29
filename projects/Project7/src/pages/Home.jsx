@@ -5,13 +5,10 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function Home() {
   const nevigetor = useNavigate();
   const [display, setDisplay] = useState(JSON.parse(localStorage.getItem("display")) || []);
-  // const [input, setInput] = useState({});
 
-  // useEffect(() => {
-  //   localStorage.setItem("display", JSON.stringify(display));
-  // }, [display]);
-
-  // console.log(display);
+  useEffect(() => {
+    localStorage.setItem("display", JSON.stringify(display));
+  }, [display]);
 
   const handleDelete = (index) => {
     const temp = [...display];
