@@ -1,27 +1,54 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Table() {
+  const users = useSelector((state) => state.users);
+  const dispatch = useDispatch();
+  // console.log(users);
+
+  const handleDelete = (id) => {
+    return dispatch({ type: "delete", id: id });
+  };
+
+  const handleEdit = (id) => {
+    return dispatch({ type: "edit", id: id });
+  };
+
   return (
     <div className="col-6">
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Nmae</th>
+            <th>Name</th>
             <th>Email</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {
-            <tr>
-              <td>John</td>
-              <td>email</td>
+          {users?.map((user, index) => (
+            <tr key={index}>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
               <td>
-                <button className="btn btn-primary me-2">Edit</button>
-                <button className="btn btn-danger">Delete</button>
+                <button
+                  onClick={() => {
+                    handleEdit(index);
+                  }}
+                  className="btn btn-primary me-2"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => {
+                    handleDelete(index);
+                  }}
+                  className="btn btn-danger"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
-          }
+          ))}
         </tbody>
       </table>
     </div>

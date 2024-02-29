@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+// import Store from "../redux/Store";
 
 export default function Form() {
   const [input, setInput] = useState({});
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -9,9 +12,10 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(input);
+    // console.log(input);
+    return dispatch({ type: "add", data: input });
 
-    // setInput({...input,})
+    // dispatch(...Store, [...Store]);
   };
   return (
     <div className="col-6">
