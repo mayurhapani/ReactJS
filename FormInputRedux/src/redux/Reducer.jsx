@@ -12,18 +12,11 @@ const Reducer = (state = initial, action) => {
       return { ...state, users: [...state.users, action.data] };
 
     case "edit":
-      // console.log(action);
-      // console.log(action.id);
-      // console.log(state.users);
-      // console.log(state.users[action.id]);
-      // console.log(action.data);
+      // var newData = [...state.users];
+      // newData[action.id] = action.data;
+      // return { ...state, users: newData };
 
-      var newData = [...state.users];
-      newData[action.id] = action.data;
-      return { ...state, users: newData };
-    // return { ...state, users: [...state.users, (state.users[action.id] = action.data)] };
-
-    // return { ...state, users: [(state.users[action.id] = action.data)] };
+      return { ...state, users: [...state.users.slice(0, action.id), action.data, ...state.users.slice(action.id + 1)] };
 
     case "delete":
       return { ...state, users: [...state.users.filter((user, id) => id !== action.id)] };

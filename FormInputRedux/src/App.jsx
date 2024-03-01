@@ -1,8 +1,6 @@
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import Form from "./component/Form";
-import Table from "./component/Table";
+// import Form from "./component/Form";
+// import Table from "./component/Table";
 
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,10 +21,12 @@ function App() {
     e.preventDefault();
     // console.log(input);
     if (isEdit) {
+      setIsEdit(false);
       dispatch({ type: "edit", data: input, id: userId });
     } else {
       return dispatch({ type: "add", data: input });
     }
+    setInput({ name: "", email: "" });
   };
 
   const handleDelete = (id) => {
