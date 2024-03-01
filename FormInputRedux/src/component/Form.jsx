@@ -22,14 +22,30 @@ export default function Form() {
       <form onSubmit={handleSubmit} className="text-center">
         <h3 className="my-3"> Register User</h3>
         <div className="form-floating mb-3">
-          <input type="text" onChange={handleChange} className="form-control" name="name" id="" placeholder="Your Name" />
+          <input
+            type="text"
+            onChange={handleChange}
+            value={input ? input.name : ""}
+            className="form-control"
+            name="name"
+            id=""
+            placeholder="Your Name"
+          />
           <label>Your Name</label>
         </div>
         <div className="form-floating mb-3">
-          <input type="email" onChange={handleChange} className="form-control" name="email" id="" placeholder="name@example.com" />
+          <input
+            type="email"
+            onChange={handleChange}
+            value={input ? input.email : ""}
+            className="form-control"
+            name="email"
+            id=""
+            placeholder="name@example.com"
+          />
           <label>Email address</label>
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit">{isEdit ? "Update" : "Submit"}</button>
       </form>
     </div>
   );

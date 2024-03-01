@@ -12,8 +12,18 @@ const Reducer = (state = initial, action) => {
       return { ...state, users: [...state.users, action.data] };
 
     case "edit":
-      console.log("edited");
-      break;
+      // console.log(action);
+      // console.log(action.id);
+      // console.log(state.users);
+      // console.log(state.users[action.id]);
+      // console.log(action.data);
+
+      var newData = [...state.users];
+      newData[action.id] = action.data;
+      return { ...state, users: newData };
+    // return { ...state, users: [...state.users, (state.users[action.id] = action.data)] };
+
+    // return { ...state, users: [(state.users[action.id] = action.data)] };
 
     case "delete":
       return { ...state, users: [...state.users.filter((user, id) => id !== action.id)] };

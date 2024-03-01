@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Table() {
   const users = useSelector((state) => state.users);
   const dispatch = useDispatch();
+
+  const [input, setInput] = useState({});
+  const [isEdit, setIsEdit] = useState(false);
   // console.log(users);
 
   const handleDelete = (id) => {
@@ -11,6 +14,9 @@ export default function Table() {
   };
 
   const handleEdit = (id) => {
+    // console.log(users[id]);
+    setInput(users[id]);
+    // setIsEdit(true);
     return dispatch({ type: "edit", id: id });
   };
 
